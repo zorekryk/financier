@@ -18,6 +18,21 @@ app.post("/transactions", (req, res) => {
     transactions.push({ date, category, description, amount, type });
     res.status(201).json({ success: true });
 });
+
+app.post("/summary", (req, res) => {
+    const summary = transactions.reduce(
+        (acc, tx) => {
+            acc.total += (tx.type === "Дохід" ? 1 : -1) * tx.amount;
+            acc.byCategory[tx.category] =
+                (acc.byCategory[tx.category] || 0) +
+                (tx.type === "Дохід" ? tx.amount : -tx.amount);
+            return acc;
+        },
+        { total: 0, byCategory: {} }
+    );
+    res.json(summary);
+});
+
 app.listen(3000, () => {
     console.log("http://localhost:3000/");
 });
