@@ -4,7 +4,50 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-const transactions = [];
+const transactions = [
+    {
+        date: "2025-05-01",
+        category: "Їжа",
+        description: "Обід у кафе",
+        amount: 220,
+        type: "Витрата",
+    },
+    {
+        date: "2025-05-02",
+        category: "Зарплата",
+        description: "Аванс",
+        amount: 5000,
+        type: "Дохід",
+    },
+    {
+        date: "2025-05-03",
+        category: "Транспорт",
+        description: "Квиток на метро",
+        amount: 30,
+        type: "Витрата",
+    },
+    {
+        date: "2025-05-04",
+        category: "Розваги",
+        description: "Кіно",
+        amount: 150,
+        type: "Витрата",
+    },
+    {
+        date: "2025-05-05",
+        category: "Фріланс",
+        description: "Оплата за замовлення",
+        amount: 2500,
+        type: "Дохід",
+    },
+    {
+        date: "2025-05-06",
+        category: "Покупки",
+        description: "Нові навушники",
+        amount: 700,
+        type: "Витрата",
+    },
+];
 
 app.get("/transactions", (req, res) => {
     res.json(transactions);
@@ -19,7 +62,7 @@ app.post("/transactions", (req, res) => {
     res.status(201).json({ success: true });
 });
 
-app.post("/summary", (req, res) => {
+app.get("/summary", (req, res) => {
     const summary = transactions.reduce(
         (acc, tx) => {
             acc.total += (tx.type === "Дохід" ? 1 : -1) * tx.amount;
