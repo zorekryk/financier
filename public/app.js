@@ -32,7 +32,15 @@ async function generateTable() {
     const tblHead = document.createElement("thead");
 
     const row = document.createElement("tr");
-    ["Date", "Category", "Description", "Amount", "Type"].forEach((field) => {
+    [
+        "id",
+        "Date",
+        "Category",
+        "Description",
+        "Amount",
+        "Type",
+        "Actions",
+    ].forEach((field) => {
         const cell = document.createElement("th");
         cell.textContent = field;
         row.appendChild(cell);
@@ -46,13 +54,38 @@ async function generateTable() {
     data.forEach((transaction) => {
         const row = document.createElement("tr");
 
-        ["date", "category", "description", "amount", "type"].forEach(
+        ["id", "date", "category", "description", "amount", "type"].forEach(
             (field) => {
                 const cell = document.createElement("td");
                 cell.textContent = transaction[field];
                 row.appendChild(cell);
             }
         );
+
+        const actionsCell = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", async () => {
+            if (!confirm("Видалити цю транзакцію?")) return;
+
+            console.log("delete id =", transaction.id);
+
+            const res = await fetch(`/transactions/${transaction.id}`, {
+                method: "DELETE",
+            });
+            if (res.ok) {
+                generateTable();
+            } else {
+                alert("Delete failed.");
+            }
+        });
+
+        actionsCell.appendChild(deleteBtn);
+        row.appendChild(actionsCell);
+
         tblBody.appendChild(row);
     });
 
