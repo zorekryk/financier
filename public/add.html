@@ -1,9 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Financier</title>
+    </head>
+    <body>
+        <h1>Add transaction</h1>
+        <a href="/">back</a>
+        <form action="/transactions" method="POST">
+            <div>
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" />
+            </div>
+            <div>
+                <label for="category">Category</label>
+                <input type="text" name="category" id="category" />
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <textarea name="description" id="description"></textarea>
+            </div>
+            <div>
+                <label for="amount">Amount</label>
+                <input type="number" name="amount" id="amount" />
+            </div>
+            <div>
+                <fieldset name="type">
+                    <legend>Type</legend>
+                    <div>
+                        <input
+                            type="radio"
+                            name="type"
+                            id="typeIncome"
+                            value="Income" />
+                        <label for="typeIncome">Income</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            name="type"
+                            id="typeExpense"
+                            value="Expense" />
+                        <label for="typeExpense">Expense</label>
+                    </div>
+                </fieldset>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </body>
 </html>

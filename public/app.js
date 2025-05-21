@@ -8,7 +8,6 @@ async function getData() {
             throw new Error(`Response status: ${response.status}`);
         }
         const json = await response.json();
-        console.log(json);
         return json;
     } catch (error) {
         console.error(error.message);
@@ -33,7 +32,7 @@ async function generateTable() {
     const tblHead = document.createElement("thead");
 
     const row = document.createElement("tr");
-    ["Дата", "Категорія", "Опис", "Сума", "Тип"].forEach((field) => {
+    ["Date", "Category", "Description", "Amount", "Type"].forEach((field) => {
         const cell = document.createElement("th");
         cell.textContent = field;
         row.appendChild(cell);
