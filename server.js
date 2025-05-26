@@ -64,24 +64,25 @@ app.get("/transactions", (req, res) => {
 });
 
 app.post("/transactions", (req, res) => {
-    console.log("body:", req.body);
     const { date, category, description, amount, type } = req.body;
+
     if (!date || !category || !amount || !type) {
         return res.status(400).json({ error: "Missing required fields" });
     }
+
+    const id = uuidv4();
     const transaction = {
-        id: uuidv4(),
+        id,
         date: escapeHtml(date),
         category: escapeHtml(date),
         description: escapeHtml(description),
         amount: escapeHtml(amount),
         type: escapeHtml(type),
     };
+
     transactions.push(transaction);
-    res.status(201).json({
-        success: true,
-        message: "New transaction is created.",
-    });
+
+    res.status(201).location(`/transactions/${id}`).json({ success: true, id });
 });
 
 app.put("/transactions/:id", (req, res) => {
@@ -93,8 +94,20 @@ app.put("/transactions/:id", (req, res) => {
     }
 
     const { date, category, description, amount, type } = req.body;
-    transactions[idx] = { id, date, category, description, amount, type };
-    res.json({ success: true });
+    if (!date || !category || !amount || !type) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    transactions[idx] = {
+        id,
+        date,
+        category,
+        description,
+        amount: Number(amount),
+        type,
+    };
+
+    res.status(204).end();
 });
 
 app.get("/transactions/:id", (req, res) => {
@@ -114,10 +127,7 @@ app.delete("/transactions/:id", (req, res) => {
     }
 
     transactions.splice(idx, 1);
-    res.status(200).json({
-        success: true,
-        message: "Transaction was deleted.",
-    });
+    res.status(204).end();
 });
 
 app.get("/summary", (req, res) => {
