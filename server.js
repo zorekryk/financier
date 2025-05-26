@@ -1,5 +1,7 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
+const escapeHtml = require("escape-html");
+
 const app = express();
 
 app.use(express.json());
@@ -69,25 +71,53 @@ app.post("/transactions", (req, res) => {
     }
     const transaction = {
         id: uuidv4(),
-        date,
-        category,
-        description,
-        amount,
-        type,
+        date: escapeHtml(date),
+        category: escapeHtml(date),
+        description: escapeHtml(description),
+        amount: escapeHtml(amount),
+        type: escapeHtml(type),
     };
     transactions.push(transaction);
-    res.redirect("/");
+    res.status(201).json({
+        success: true,
+        message: "New transaction is created.",
+    });
+});
+
+app.put("/transactions/:id", (req, res) => {
+    const id = req.params.id;
+    const idx = transactions.findIndex((tx) => tx.id === id);
+
+    if (idx === -1) {
+        return res.status(400).json({ error: "Not found" });
+    }
+
+    const { date, category, description, amount, type } = req.body;
+    transactions[idx] = { id, date, category, description, amount, type };
+    res.json({ success: true });
+});
+
+app.get("/transactions/:id", (req, res) => {
+    const id = req.params.id;
+    const tx = transactions.find((tx) => tx.id === id);
+    if (!tx) return res.status(404).json({ error: "Not found" });
+    res.json(tx);
 });
 
 app.delete("/transactions/:id", (req, res) => {
     const id = req.params.id;
+
     const idx = transactions.findIndex((tx) => tx.id === id);
+
     if (idx === -1) {
-        return res.status(404).json({ error: "Not found" });
+        return res.status(404).json({ error: "Not founds" });
     }
+
     transactions.splice(idx, 1);
-    // Ніяких редиректів — чистий JSON
-    res.json({ success: true });
+    res.status(200).json({
+        success: true,
+        message: "Transaction was deleted.",
+    });
 });
 
 app.get("/summary", (req, res) => {
