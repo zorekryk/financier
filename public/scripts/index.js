@@ -1,4 +1,4 @@
-const tblDiv = document.getElementById("table-div");
+const container = document.getElementById("table-div");
 
 async function getTransactions() {
     const url = "/transactions";
@@ -195,18 +195,17 @@ function renderRow(tx) {
 }
 
 async function generateTable() {
-    tblDiv.innerHTML = "";
+    container.innerHTML = "";
 
     const data = await getTransactions();
 
     if (!data) {
-        return showMessage("Data loading error", tblDiv, "message-error", true);
+        return showMessage("Data loading error", container, "message-error", true);
     }
 
-    tblDiv.classList.add("table-wrapper");
     const rows = data.map(renderRow).join("");
 
-    tblDiv.innerHTML = `
+    container.innerHTML = `
         <table>
             <thead>
                 <tr>
@@ -225,18 +224,18 @@ async function generateTable() {
     `;
 
     if (data.length === 0) {
-        showMessage("No transactions yet", tblDiv, "message-info-sm", false);
+        showMessage("No transactions yet", container, "message-info-sm", false);
         return;
     }
 
-    tblDiv.querySelectorAll(".edit-btn").forEach((btn) => {
+    container.querySelectorAll(".edit-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id = btn.closest("tr").dataset.id;
             window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
         });
     });
 
-    tblDiv.querySelectorAll(".delete-btn").forEach((btn) => {
+    container.querySelectorAll(".delete-btn").forEach((btn) => {
         btn.addEventListener("click", async () => {
             const id = btn.closest("tr").dataset.id;
             if (!confirm("Delete transactions?")) return;
