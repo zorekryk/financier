@@ -243,8 +243,11 @@ async function generateTable() {
                 method: "DELETE",
             });
             console.log("fetching DELETE /transactions/" + encodeURIComponent(id));
-            if (res.ok) generateTable();
-            else alert("failed");
+            if (res.ok) {
+                renderSummary();
+                renderCategories();
+                generateTable();
+            } else alert("failed");
         });
     });
 }
