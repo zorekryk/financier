@@ -260,7 +260,10 @@ const transactions = [
 ];
 
 app.get("/transactions", (req, res) => {
-    res.json(transactions);
+    const sorted = [...transactions].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
+    res.json(sorted);
 });
 
 app.post("/transactions", (req, res) => {
