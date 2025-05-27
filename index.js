@@ -6,53 +6,54 @@ const app = express();
 
 app.use(express.json());
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 const transactions = [
     {
         id: uuidv4(),
         date: "2025-05-01",
-        category: "Їжа",
-        description: "Обід у кафе",
+        category: "Food",
+        description: "Lunch in a cafe",
         amount: 220,
         type: "Expense",
     },
     {
         id: uuidv4(),
         date: "2025-05-02",
-        category: "Зарплата",
-        description: "Аванс",
+        category: "Salary",
+        description: "Advance",
         amount: 5000,
         type: "Income",
     },
     {
         id: uuidv4(),
         date: "2025-05-03",
-        category: "Транспорт",
-        description: "Квиток на метро",
+        category: "Transportation",
+        description: "Metro ticket",
         amount: 30,
         type: "Expense",
     },
     {
         id: uuidv4(),
         date: "2025-05-04",
-        category: "Розваги",
-        description: "Кіно",
+        category: "Entertainment",
+        description: "Movie ticket",
         amount: 150,
         type: "Expense",
     },
     {
         id: uuidv4(),
         date: "2025-05-05",
-        category: "Фріланс",
-        description: "Оплата за замовлення",
+        category: "Freelance",
+        description: "Payment for the order",
         amount: 2500,
         type: "Income",
     },
     {
         id: uuidv4(),
         date: "2025-05-06",
-        category: "Покупки",
-        description: "Нові навушники",
+        category: "Shopping",
+        description: "New headphones",
         amount: 700,
         type: "Expense",
     },

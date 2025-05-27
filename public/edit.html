@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Financier</title>
+        <title>Edit Transaction</title>
         <link rel="stylesheet" href="styles/styles.css" />
-        <style>
-            textarea {
-                resize: none;
-            }
-        </style>
     </head>
     <body>
         <div class="fade-in">
@@ -18,8 +13,8 @@
                     <div class="header-content">
                         <a href="/" class="logo">💰 Financier</a>
                         <nav class="nav">
-                            <a href="/">Dashboard</a>
-                            <a href="add.html" class="active">Add</a>
+                            <a href="/" class="active">Dashboard</a>
+                            <a href="add.html">Add</a>
                         </nav>
                     </div>
                 </header>
@@ -28,9 +23,9 @@
                     <h1 class="page-title">Add transaction</h1>
 
                     <div class="form-container">
-                        <form action="/transactions" method="POST" id="addForm">
+                        <form id="editForm">
                             <div class="form-group">
-                                <input type="date" name="date" id="date" />
+                                <input type="date" id="date" name="date" />
                                 <label for="date">Date</label>
                             </div>
                             <div class="form-group">
@@ -79,8 +74,32 @@
                 </main>
             </div>
         </div>
+
         <script>
-            const form = document.getElementById("addForm");
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+            const form = document.getElementById("editForm");
+
+            window.addEventListener("DOMContentLoaded", async () => {
+                try {
+                    const res = await fetch(`/transactions/${id}`);
+                    if (!res.ok) throw new Error("Not founds");
+                    const tx = await res.json();
+
+                    document.getElementById("date").value = tx.date;
+                    document.getElementById("category").value = tx.category;
+                    document.getElementById("description").value = tx.description;
+                    document.getElementById("amount").value = tx.amount;
+
+                    if (tx.type === "Income") {
+                        document.getElementById("typeIncome").checked = true;
+                    } else {
+                        document.getElementById("typeExpense").checked = true;
+                    }
+                } catch (e) {
+                    document.body.innerHTML = "<p>Couldn't load transaction.</p>";
+                }
+            });
 
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
@@ -94,8 +113,8 @@
                 };
 
                 try {
-                    const res = await fetch(`/transactions`, {
-                        method: "POST",
+                    const res = await fetch(`/transactions/${encodeURIComponent(id)}`, {
+                        method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data),
                     });
