@@ -263,7 +263,7 @@ app.get("/transactions", (req, res) => {
     const sorted = [...transactions].sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
     });
-    res.json(sorted);
+    res.json(transactions);
 });
 
 app.post("/transactions", (req, res) => {
@@ -277,7 +277,7 @@ app.post("/transactions", (req, res) => {
     const transaction = {
         id,
         date: escapeHtml(date),
-        category: escapeHtml(date),
+        category: escapeHtml(category),
         description: escapeHtml(description),
         amount: escapeHtml(amount),
         type: escapeHtml(type),
