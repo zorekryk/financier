@@ -263,7 +263,7 @@ app.get("/transactions", (req, res) => {
     const sorted = [...transactions].sort((a, b) => {
         return new Date(b.date) - new Date(a.date);
     });
-    res.json(transactions);
+    res.json(sorted);
 });
 
 app.post("/transactions", (req, res) => {
