@@ -113,8 +113,6 @@ async function renderSummary() {
     ].join("");
 }
 
-renderSummary();
-
 async function renderCategories() {
     const { byCategory } = await getSummary();
 
@@ -156,8 +154,6 @@ async function renderCategories() {
         .join("");
     container.innerHTML = html;
 }
-
-renderCategories();
 
 function renderRow(tx) {
     const absAmount = Math.abs(tx.amount);
@@ -252,4 +248,6 @@ async function generateTable() {
     });
 }
 
+renderSummary();
+renderCategories();
 generateTable();
