@@ -1,5 +1,11 @@
 # Financier
 
+## Screenshots
+
+![All transactions](assets/all-transactions.png)
+![Transactions](assets/transactions.png)
+![Add page](assets/add-page.png)
+
 ## Table of contents
 
 1. [Project Overview](#project-overview)
@@ -15,7 +21,7 @@
 Financier is a minimal web application for tracking income and expenses. It
 provides a simple dashboard that shows:
 
-- A table of all transactions (date, categorty, description, amount, type).
+- A table of all transactions (date, category, description, amount, type).
 - A summary of total income, total expenses, and net balance.
 - A breakdown of expenses by category.
 
@@ -36,7 +42,7 @@ provides a simple dashboard that shows:
 
 - **Frontend:**
 
-    - Plain HTML/CSS/JavaScript (no frontend frameword)
+    - Plain HTML/CSS/JavaScript (no frontend framework)
 
 - **Dev Tools:**
     - [nodemon](https://github.com/remy/nodemon) (for automatic server restarts
@@ -55,7 +61,7 @@ provides a simple dashboard that shows:
     - Navigate to /add.html (via “Add Transaction” link).
     - Fill in Date, Category, Description, Amount, and Type (Income or Expense).
     - Click “Save.” The new transaction is pushed into the server’s in‐memory
-      list and you’re redirected to the dashboard.
+      list, and you’re redirected to the dashboard.
 3. **Edit Transaction**
     - Click the “Edit” icon next to any transaction.
     - The form at /edit.html?id=<transaction_id> pre‐populates fields with
