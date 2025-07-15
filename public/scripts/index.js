@@ -7,8 +7,7 @@ async function getTransactions() {
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);
     }
-    const json = await res.json();
-    return json;
+    return await res.json();
   } catch (err) {
     console.error(err.message);
     return false;
@@ -22,8 +21,7 @@ async function getSummary() {
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);
     }
-    const json = await res.json();
-    return json;
+    return await res.json();
   } catch (err) {
     console.error(err.message);
     return false;
@@ -132,7 +130,7 @@ async function renderCategories() {
     .filter((v) => v < 0)
     .reduce((a, v) => a + Math.abs(v), 0);
 
-  const html = Object.entries(byCategory)
+  container.innerHTML = Object.entries(byCategory)
     .map(([cat, sum]) => {
       const abs = Math.abs(sum);
       const type = sum > 0 ? "income" : "expense";
@@ -152,7 +150,6 @@ async function renderCategories() {
         `;
     })
     .join("");
-  container.innerHTML = html;
 }
 
 function renderRow(tx) {
