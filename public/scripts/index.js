@@ -1,67 +1,67 @@
 const container = document.getElementById("table-div");
 
 async function getTransactions() {
-    const url = "/transactions";
-    try {
-        const res = await fetch(url);
-        if (!res.ok) {
-            throw new Error(`Response status: ${res.status}`);
-        }
-        const json = await res.json();
-        return json;
-    } catch (err) {
-        console.error(err.message);
-        return false;
+  const url = "/transactions";
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`);
     }
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    console.error(err.message);
+    return false;
+  }
 }
 
 async function getSummary() {
-    const url = "/summary";
-    try {
-        const res = await fetch(url);
-        if (!res.ok) {
-            throw new Error(`Response status: ${res.status}`);
-        }
-        const json = await res.json();
-        return json;
-    } catch (err) {
-        console.error(err.message);
-        return false;
+  const url = "/summary";
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`);
     }
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    console.error(err.message);
+    return false;
+  }
 }
 
 function formatUAH(amount) {
-    return new Intl.NumberFormat("uk-UA", {
-        style: "currency",
-        currency: "UAH",
-        minimumFractionDigits: 0,
-    }).format(amount);
+  return new Intl.NumberFormat("uk-UA", {
+    style: "currency",
+    currency: "UAH",
+    minimumFractionDigits: 0,
+  }).format(amount);
 }
 
 function showMessage(msg, container, selector, clear = true) {
-    if (clear) container.innerHTML = "";
-    const p = document.createElement("p");
-    p.classList.add(selector);
-    p.textContent = msg;
-    container.appendChild(p);
+  if (clear) container.innerHTML = "";
+  const p = document.createElement("p");
+  p.classList.add(selector);
+  p.textContent = msg;
+  container.appendChild(p);
 }
 
 async function renderSummary() {
-    const { total, byCategory } = await getSummary();
+  const {total, byCategory} = await getSummary();
 
-    const container = document.querySelector(".summary-cards");
+  const container = document.querySelector(".summary-cards");
 
-    const incCats = Object.entries(byCategory)
-        .filter(([, sum]) => sum > 0)
-        .map(([cat]) => cat);
-    const incTotal = incCats.reduce((sum, cat) => sum + byCategory[cat], 0);
+  const incCats = Object.entries(byCategory)
+    .filter(([, sum]) => sum > 0)
+    .map(([cat]) => cat);
+  const incTotal = incCats.reduce((sum, cat) => sum + byCategory[cat], 0);
 
-    const expCats = Object.entries(byCategory)
-        .filter(([, sum]) => sum < 0)
-        .map(([cat]) => cat);
-    const expTotal = expCats.reduce((sum, cat) => sum + byCategory[cat], 0);
+  const expCats = Object.entries(byCategory)
+    .filter(([, sum]) => sum < 0)
+    .map(([cat]) => cat);
+  const expTotal = expCats.reduce((sum, cat) => sum + byCategory[cat], 0);
 
-    const makeCard = ({ title, icon, amount, details, trend }) => `
+  const makeCard = ({title, icon, amount, details, trend}) => `
         <div class="summary-card ${title.split(" ")[1].toLowerCase()}-card">
             <div class="card-header">
                 <h3>${title}</h3>
@@ -71,74 +71,74 @@ async function renderSummary() {
                 ${formatUAH(amount)}
             </div>
             ${
-                trend
-                    ? `
+    trend
+      ? `
                 <div class="${title.split(" ")[1].toLowerCase()}-trend
                 ${trend >= 0 ? "positive" : "negative"}">
                 <span class="trend-icon">${trend >= 0 ? "↗" : "↘"}</span>
                 <span>${trend >= 0 ? "Positive balance" : "Negative balance"}</span>
             </div>
             `
-                    : `
+      : `
                 <div class="${title.split(" ")[1].toLowerCase()}-details">
                     ${details.length ? details.join(", ") : ""}
                 </div>
             `
-            }
+  }
         </div>
     `;
 
-    container.innerHTML = [
-        makeCard({
-            title: "Total Balance",
-            icon: "💰",
-            amount: total,
-            trend: total,
-            details: [],
-        }),
-        makeCard({
-            title: "Total Income",
-            icon: "📈",
-            amount: incTotal,
-            trend: null,
-            details: incCats,
-        }),
-        makeCard({
-            title: "Total Expense",
-            icon: "📉",
-            amount: expTotal,
-            trend: null,
-            details: expCats,
-        }),
-    ].join("");
+  container.innerHTML = [
+    makeCard({
+      title: "Total Balance",
+      icon: "💰",
+      amount: total,
+      trend: total,
+      details: [],
+    }),
+    makeCard({
+      title: "Total Income",
+      icon: "📈",
+      amount: incTotal,
+      trend: null,
+      details: incCats,
+    }),
+    makeCard({
+      title: "Total Expense",
+      icon: "📉",
+      amount: expTotal,
+      trend: null,
+      details: expCats,
+    }),
+  ].join("");
 }
 
 async function renderCategories() {
-    const { byCategory } = await getSummary();
+  const {byCategory} = await getSummary();
 
-    const container = document.querySelector(".categories-grid");
+  const container = document.querySelector(".categories-grid");
 
-    if (!byCategory) {
-        return showMessage("Error loading data", container, "message-error-sm", true);
-    }
-    if (Object.entries(byCategory).length === 0) {
-        return showMessage("No data yet", container, "message-info-sm", true);
-    }
+  if (!byCategory) {
+    return showMessage("Error loading data", container, "message-error-sm", true);
+  }
+  if (Object.entries(byCategory).length === 0) {
+    return showMessage("No data yet", container, "message-info-sm", true);
+  }
 
-    const incSum = Object.values(byCategory)
-        .filter((v) => v > 0)
-        .reduce((a, v) => a + v, 0);
-    const expSum = Object.values(byCategory)
-        .filter((v) => v < 0)
-        .reduce((a, v) => a + Math.abs(v), 0);
+  const incSum = Object.values(byCategory)
+    .filter((v) => v > 0)
+    .reduce((a, v) => a + v, 0);
+  const expSum = Object.values(byCategory)
+    .filter((v) => v < 0)
+    .reduce((a, v) => a + Math.abs(v), 0);
 
-    const html = Object.entries(byCategory)
-        .map(([cat, sum]) => {
-            const abs = Math.abs(sum);
-            const type = sum > 0 ? "income" : "expense";
-            const pct = type === "income" ? (abs / incSum) * 100 : (abs / expSum) * 100;
+  const html = Object.entries(byCategory)
+    .map(([cat, sum]) => {
+      const abs = Math.abs(sum);
+      const type = sum > 0 ? "income" : "expense";
+      const pct = type === "income" ? (abs / incSum) * 100 : (abs / expSum) * 100;
 
-            return `
+      return `
             <div class="category-item">
                 <div class="category-info">
                     <span class="category-name">${cat}</span>
@@ -150,20 +150,20 @@ async function renderCategories() {
                 </div>
             </div>
         `;
-        })
-        .join("");
-    container.innerHTML = html;
+    })
+    .join("");
+  container.innerHTML = html;
 }
 
 function renderRow(tx) {
-    const absAmount = Math.abs(tx.amount);
-    const formattedAmount =
-        (tx.type === "Expense" ? "-" : "+") + absAmount.toLocaleString("uk-UA") + "₴";
+  const absAmount = Math.abs(tx.amount);
+  const formattedAmount =
+    (tx.type === "Expense" ? "-" : "+") + absAmount.toLocaleString("uk-UA") + "₴";
 
-    const amountClass = tx.type === "Expense" ? "expense" : "income";
-    const typeClass = tx.type === "Expense" ? "type-expense" : "type-income";
+  const amountClass = tx.type === "Expense" ? "expense" : "income";
+  const typeClass = tx.type === "Expense" ? "type-expense" : "type-income";
 
-    return `
+  return `
         <tr data-id=${JSON.stringify(tx.id)}>
             <td>${tx.date}</td>
             <td>${tx.category}</td>
@@ -191,17 +191,17 @@ function renderRow(tx) {
 }
 
 async function generateTable() {
-    container.innerHTML = "";
+  container.innerHTML = "";
 
-    const data = await getTransactions();
+  const data = await getTransactions();
 
-    if (!data) {
-        return showMessage("Data loading error", container, "message-error", true);
-    }
+  if (!data) {
+    return showMessage("Data loading error", container, "message-error", true);
+  }
 
-    const rows = data.map(renderRow).join("");
+  const rows = data.map(renderRow).join("");
 
-    container.innerHTML = `
+  container.innerHTML = `
         <table>
             <thead>
                 <tr>
@@ -219,33 +219,33 @@ async function generateTable() {
         </table>
     `;
 
-    if (data.length === 0) {
-        showMessage("No transactions yet", container, "message-info-sm", false);
-        return;
-    }
+  if (data.length === 0) {
+    showMessage("No transactions yet", container, "message-info-sm", false);
+    return;
+  }
 
-    container.querySelectorAll(".edit-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const id = btn.closest("tr").dataset.id;
-            window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
-        });
+  container.querySelectorAll(".edit-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.closest("tr").dataset.id;
+      window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
     });
+  });
 
-    container.querySelectorAll(".delete-btn").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-            const id = btn.closest("tr").dataset.id;
-            if (!confirm("Delete transactions?")) return;
-            const res = await fetch(`/transactions/${encodeURIComponent(id)}`, {
-                method: "DELETE",
-            });
-            console.log("fetching DELETE /transactions/" + encodeURIComponent(id));
-            if (res.ok) {
-                renderSummary();
-                renderCategories();
-                generateTable();
-            } else alert("failed");
-        });
+  container.querySelectorAll(".delete-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.closest("tr").dataset.id;
+      if (!confirm("Delete transactions?")) return;
+      const res = await fetch(`/transactions/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      console.log("fetching DELETE /transactions/" + encodeURIComponent(id));
+      if (res.ok) {
+        renderSummary();
+        renderCategories();
+        generateTable();
+      } else alert("failed");
     });
+  });
 }
 
 renderSummary();

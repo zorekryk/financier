@@ -1,129 +1,167 @@
 <!DOCTYPE html>
 <html lang="uk">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Edit Transaction</title>
-        <link rel="stylesheet" href="styles/styles.css" />
-    </head>
-    <body>
-        <div class="fade-in">
-            <div class="container">
-                <header>
-                    <div class="header-content">
-                        <a href="/" class="logo">💰 Financier</a>
-                        <nav class="nav">
-                            <a href="/" class="active">Dashboard</a>
-                            <a href="add.html">Add</a>
-                        </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Edit Transaction</title>
+    <link
+      rel="stylesheet"
+      href="styles/styles.css"
+    />
+  </head>
+  <body>
+    <div class="fade-in">
+      <div class="container">
+        <header>
+          <div class="header-content">
+            <a
+              href="/"
+              class="logo"
+            >💰 Financier
+            </a>
+            <nav class="nav">
+              <a
+                href="/"
+                class="active"
+              >Dashboard
+              </a>
+              <a href="add.html">Add</a>
+            </nav>
+          </div>
+        </header>
+
+        <main class="main-content">
+          <h1 class="page-title">Add transaction</h1>
+
+          <div class="form-container">
+            <form id="editForm">
+              <div class="form-group">
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                />
+                <label for="date">Date</label>
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="category"
+                  id="category"
+                />
+                <label for="category">Category</label>
+              </div>
+              <div class="form-group">
+            <textarea
+              name="description"
+              id="description"
+            ></textarea>
+                <label for="description">Description</label>
+              </div>
+              <div class="form-group">
+                <input
+                  type="number"
+                  name="amount"
+                  id="amount"
+                />
+                <label for="amount">Amount</label>
+              </div>
+              <div class="form-group">
+                <fieldset name="type">
+                  <legend>Transaction Type</legend>
+                  <div class="radio-group">
+                    <div class="radio-item">
+                      <input
+                        type="radio"
+                        name="type"
+                        id="typeIncome"
+                        value="Income"
+                      />
+                      <label for="typeIncome">Income</label>
                     </div>
-                </header>
-
-                <main class="main-content">
-                    <h1 class="page-title">Add transaction</h1>
-
-                    <div class="form-container">
-                        <form id="editForm">
-                            <div class="form-group">
-                                <input type="date" id="date" name="date" />
-                                <label for="date">Date</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="category" id="category" />
-                                <label for="category">Category</label>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="description" id="description"></textarea>
-                                <label for="description">Description</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="number" name="amount" id="amount" />
-                                <label for="amount">Amount</label>
-                            </div>
-                            <div class="form-group">
-                                <fieldset name="type">
-                                    <legend>Transaction Type</legend>
-                                    <div class="radio-group">
-                                        <div class="radio-item">
-                                            <input
-                                                type="radio"
-                                                name="type"
-                                                id="typeIncome"
-                                                value="Income" />
-                                            <label for="typeIncome">Income</label>
-                                        </div>
-                                        <div class="radio-item">
-                                            <input
-                                                type="radio"
-                                                name="type"
-                                                id="typeExpense"
-                                                value="Expense" />
-                                            <label for="typeExpense">Expense</label>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="form-actions">
-                                <button class="btn btn-primary btn-large" type="submit">
-                                    Submit
-                                </button>
-                                <a href="/" class="btn btn-secondary btn-large">Cancel</a>
-                            </div>
-                        </form>
+                    <div class="radio-item">
+                      <input
+                        type="radio"
+                        name="type"
+                        id="typeExpense"
+                        value="Expense"
+                      />
+                      <label for="typeExpense">Expense</label>
                     </div>
-                </main>
-            </div>
-        </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="form-actions">
+                <button
+                  class="btn btn-primary btn-large"
+                  type="submit"
+                >
+                  Submit
+                </button>
+                <a
+                  href="/"
+                  class="btn btn-secondary btn-large"
+                >Cancel
+                </a>
+              </div>
+            </form>
+          </div>
+        </main>
+      </div>
+    </div>
 
-        <script>
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get("id");
-            const form = document.getElementById("editForm");
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const form = document.getElementById("editForm");
 
-            window.addEventListener("DOMContentLoaded", async () => {
-                try {
-                    const res = await fetch(`/transactions/${id}`);
-                    if (!res.ok) throw new Error("Not founds");
-                    const tx = await res.json();
+      window.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const res = await fetch(`/transactions/${id}`);
+          if (!res.ok) throw new Error("Not founds");
+          const tx = await res.json();
 
-                    document.getElementById("date").value = tx.date;
-                    document.getElementById("category").value = tx.category;
-                    document.getElementById("description").value = tx.description;
-                    document.getElementById("amount").value = tx.amount;
+          document.getElementById("date").value = tx.date;
+          document.getElementById("category").value = tx.category;
+          document.getElementById("description").value = tx.description;
+          document.getElementById("amount").value = tx.amount;
 
-                    if (tx.type === "Income") {
-                        document.getElementById("typeIncome").checked = true;
-                    } else {
-                        document.getElementById("typeExpense").checked = true;
-                    }
-                } catch (e) {
-                    document.body.innerHTML = "<p>Couldn't load transaction.</p>";
-                }
-            });
+          if (tx.type === "Income") {
+            document.getElementById("typeIncome").checked = true;
+          } else {
+            document.getElementById("typeExpense").checked = true;
+          }
+        } catch (e) {
+          document.body.innerHTML = "<p>Couldn't load transaction.</p>";
+        }
+      });
 
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-                const data = {
-                    date: form.date.value,
-                    category: form.category.value,
-                    description: form.description.value,
-                    amount: Number(form.amount.value),
-                    type: form.type.value,
-                };
+        const data = {
+          date: form.date.value,
+          category: form.category.value,
+          description: form.description.value,
+          amount: Number(form.amount.value),
+          type: form.type.value,
+        };
 
-                try {
-                    const res = await fetch(`/transactions/${encodeURIComponent(id)}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data),
-                    });
-                    if (!res.ok) throw new Error("Update failed");
-                    window.location.href = "/";
-                } catch (err) {
-                    alert(err.message);
-                }
-            });
-        </script>
-    </body>
+        try {
+          const res = await fetch(`/transactions/${encodeURIComponent(id)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) throw new Error("Update failed");
+          window.location.href = "/";
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    </script>
+  </body>
 </html>

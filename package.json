@@ -1,24 +1,24 @@
 {
-    "name": "financier",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [],
-    "author": "Kyryl",
-    "license": "ISC",
-    "type": "commonjs",
-    "dependencies": {
-        "escape-html": "^1.0.3",
-        "express": "^5.1.0",
-        "uuid": "^11.1.0",
-        "uuidv4": "^6.2.13"
-    },
-    "devDependencies": {
-        "nodemon": "^3.1.10"
-    }
+  "name": "financier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Kyryl",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "escape-html": "^1.0.3",
+    "express": "^5.1.0",
+    "uuid": "^11.1.0",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
